@@ -1,5 +1,8 @@
 #!/bin/bash
 
+go get -u github.com/andreburgaud/crypt2go/ecb
+go get -u github.com/SheltonZhu/115driver/pkg/crypto/ec115
+
 cd ../alistlib || exit
 if [ "$1" == "debug" ]; then
   gomobile bind -ldflags "-s -w" -v -androidapi 19 -target="android/arm64"
