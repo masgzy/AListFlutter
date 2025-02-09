@@ -45,12 +45,19 @@ jobs:
 
       - name: Build AList
         run: |
-            cd $GITHUB_WORKSPACE/alist-lib/scripts
-            chmod +x *.sh
-            ./init_gomobile.sh
-            ./gobind.sh
+          set -x
+          cd $GITHUB_WORKSPACE/alist-lib/scripts
+          chmod +x *.sh
+          ./init_gomobile.sh
+          ./gobind.sh
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+
+      - name: Move aar 和 jar files to android/app/libs
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/android/app/libs
+          mv ./*.aar $GITHUB_WORKSPACE/android/app/libs/ 2>/dev/null || true
+          mv ./*.jar $GITHUB_WORKSPACE/android/app/libs/ 2>/dev/null || true
 
       - name: Upload AAR
         uses: actions/upload-artifact@v4
@@ -79,6 +86,7 @@ jobs:
         with:
           name: "missing_rules"
           path: "${{ github.workspace }}/build/app/outputs/mapping/release/missing_rules.txt"
+          if-no-files-found: ignore
 
       - name: Init APP Version Name
         run: |
