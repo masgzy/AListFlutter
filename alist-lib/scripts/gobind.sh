@@ -1,5 +1,8 @@
 #!/bin/bash
 
+go install golang.org/x/mobile/cmd/gomobile@latest
+gomobile init
+
 cd ../alistlib || exit
 if [ "$1" == "debug" ]; then
   gomobile bind -ldflags "-s -w" -v -androidapi 19 -target="android/arm64"
